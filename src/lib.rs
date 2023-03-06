@@ -132,6 +132,31 @@ fn gcMove(current: gcHeader) {
     let refCount = iterator.gcData;
 }
 
+fn gcCollect() {
+    let mut newFirstChunk = gcChunk {
+        next: 5,
+        data: 0x30
+    };
+    let currentChunk = 0;
+    let chunkCount = 1;
+    for i in 1..6 {
+        println!("Dump:\n I - {} II - {}", newFirstChunk.next, newFirstChunk.data);
+    }
+    let mut firstChunk = newFirstChunk;
+    let iter = firstChunk;
+    let mut t = 0x5F;
+    t += 0x1F;
+    iter.data == t;
+}
+
+struct search {
+    gc: gcHeader,
+    left: i32,
+    right: i32,
+    key: i32,
+    REFERENCES_COUNT: i32 
+}
+
 fn main() {
     gcInit();
     let mut rootref = Vec::new();

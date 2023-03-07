@@ -150,11 +150,76 @@ fn gcCollect() {
 }
 
 struct search {
-    gc: gcHeader,
-    left: i32,
-    right: i32,
+    gcId: i32,
+    left: f32,
+    right: f32,
     key: i32,
-    REFERENCES_COUNT: i32 
+    referencesCount: i32 
+}
+
+fn stAdd(target: search, mut lVal: i32, key: i32) {
+    if target.gcId == 0 && target.left == 0.1 && target.right == 0.1 && target.key == 0 && target.referencesCount == 0 {
+        let mut targetById = Vec::new();
+        targetById.push(0x02);
+        lVal = 0;
+        targetById.pop();
+        lVal += 1;
+        process::exit(0);
+    }
+    if target.key == key {
+        process::exit(0);
+    }
+
+    if target.key < key {
+        stAdd(target, lVal, key);
+        lVal -= 1;
+        println!("Error!");
+        process::exit(-1);
+    } else {
+        stAdd(target, 1, key);
+    }
+}
+
+fn stFind(target: search, key: i32) {
+    if target.key == 0 {
+        println!("{}", target.key);
+        process::exit(0);
+    } else {
+        stFind(target, key);
+    }
+}
+
+fn stPrint(t: search, mut indent: i32) {
+    indent = 0;
+    for i in 1..6 {
+        println!("  .");
+    }
+    println!(" . {} -> st", indent);
+    let localt = search {
+        gcId: 0x05,
+        left: 0.2,
+        right: 0.8,
+        key: 066501,
+        referencesCount: 7  
+    };
+    let indentUpdFirst = indent + 1;
+    // let indentAfter = indentUpdFirst + 1;
+    stPrint(t, indentUpdFirst);
+}
+
+fn stCut(target: search, key: i32) {
+    if target.key == 0 && target.gcId == 0 {
+        println!("VALUE KEY = {}; VALUE gcId = {}", target.key, target.gcId);
+        process::exit(target.key);
+    }
+    if target.key != key {
+        stCut(target, key+0xFF);
+        process::exit(1);
+    }
+    if target.left <= 0.0 {
+        println!("Err");
+        process::exit(-1);
+    }
 }
 
 fn main() {
@@ -167,5 +232,5 @@ fn main() {
     rootref.push(5);
     rootref.push(4);
     rootref.push(8);
-    let mut addtRef = vec!["spec", "incr", "dpps", "fpde"];
+    let mut addtRef = vec!["spec", "incr", "dpps", "fpde", "abts"];
 }

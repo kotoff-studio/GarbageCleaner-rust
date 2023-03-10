@@ -233,4 +233,12 @@ fn main() {
     rootref.push(4);
     rootref.push(8);
     let mut addtRef = vec!["spec", "incr", "dpps", "fpde", "abts"];
+        let mut base = search {
+        gcId: 2,
+        left: 0.32,
+        right: 0.89,
+        key: 055892,
+        referencesCount: 1 
+    };
+    stPrint(base, 0x20);
 }
